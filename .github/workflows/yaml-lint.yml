@@ -6,11 +6,6 @@ on:
   pull_request:
     branches: [main]
 
-rules:
-  line-length:
-    max: 120
-    level: warning
-
 jobs:
   yamllint:
     runs-on: ubuntu-latest
