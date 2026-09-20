@@ -1,0 +1,39 @@
+- name: install apt-dependencies with gpg
+  apt:
+    name:
+      - curl
+      - gnupg2
+      - ca-certificates
+      - lsb-release
+      - ubuntu-keyring
+    state: present
+    update_cache: yes
+  tags:
+    - nginx
+    - packages
+- name:  Download and Save GPG-key for nginx
+  get_url:
+    url: "{{ nginx_key_url }}"
+    dest: "{{ nginx_key_dest }}"
+    mode: "0644"
+  tags:
+    - nginx
+    - repo
+- name: Repo creation
+  copy:
+    content: "{{ nginx_repo_url }}"
+    dest: "{{ nginx_list_file }}"
+    mode: "0644"
+  #notify: Update apt cache
+  tags:
+    - nginx
+    - repo
+- name: install nginx
+  apt:
+    name: nginx
+    state: present
+  tags:
+    - nginx
+    - install
+
+
