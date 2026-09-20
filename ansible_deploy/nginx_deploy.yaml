@@ -9,16 +9,14 @@
     nginx_pass: "{{ vault_carx_password | password_hash('sha512') }}"
     html_content: "My Nginx Server"
 
-  roles
+  roles:
     - role: preinstall
     - role: nginx_install
     - role: nginx_setup
     - role: security
-
 #  tasks:
 #    - name: Update apt cache and upgrade all packages
 #      apt:
 #        update_cache: yes
 #        upgrade: dist
 #        cache_valid_time: 3600
-
