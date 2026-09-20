@@ -1,6 +1,4 @@
 # devops_challenge
 Тестовое задание
-
-
-
-kind_deploy - 2 часть
+ansible_deploy - 1 часть (разворот Nginx)
+kind_deploy - 2 часть (разворот JS-приложения на Docker+Kubernetes)
