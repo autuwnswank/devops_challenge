@@ -27,3 +27,11 @@ vault_carx_login: "..."
 
 # Дополнение
 Сделан скрипт delete_nginx.sh для полного удаления nginx и его компонент из системы для тестирования
+
+Добавлен мониторинг nginx (Prometheus + Grafana) на предмет активных соединений и RPS
+
+Команда для подняти
+
+Команда для поднятия: ```sudo ansible-playbook nginx_monitoring.yaml -e "local=true" --ask-vault-pass```
+
+Логин/пароль Grafana дефолтный admin:admin, будет работать на 3000 порту

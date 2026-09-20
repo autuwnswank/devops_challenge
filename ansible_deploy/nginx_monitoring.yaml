@@ -1,0 +1,64 @@
+- name: Deploy Nginx Monitoring
+  hosts: localhost
+  become: yes
+
+  tasks:
+    - name: Pull Prometheus image
+      community.docker.docker_image:
+        name: prom/prometheus
+        tag: latest
+        source: pull
+
+    - name: Pull Grafana image
+      community.docker.docker_image:
+        name: grafana/grafana
+        tag: latest
+        source: pull
+
+    - name: Pull nginx-exporter image
+      community.docker.docker_image:
+        name: nginx/nginx-prometheus-exporter
+        tag: latest
+        source: pull
+
+    - name: Monitoring network create
+      community.docker.docker_network:
+        name: monitoring
+        state: present
+
+    - name: Run nginx-exporter container
+      community.docker.docker_container:
+        name: nginx-exporter
+        image: nginx/nginx-prometheus-exporter:latest
+        state: started
+        restart_policy: unless-stopped
+        networks:
+          - name: monitoring
+        command:
+          - -nginx.scrape-uri=http://172.17.0.1:8080/stub_status
+        exposed_ports:
+          - "9113"
+
+    - name: Run Prometheus
+      community.docker.docker_container:
+        name: prometheus
+        image: prom/prometheus
+        networks:
+          - name: monitoring
+        ports:
+          - "9090:9090"
+        volumes:
+          - ./files/prometheus.yml:/etc/prometheus/prometheus.yml
+
+    - name: Run Grafana
+      community.docker.docker_container:
+        name: grafana
+        image: grafana/grafana
+        networks:
+          - name: monitoring
+        ports:
+          - "3000:3000"
+        volumes:
+          - ./files/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+          - ./files/dashboard-provider.yml:/etc/grafana/provisioning/dashboards/dashboard-provider.yml
+          - ./files/nginx-dashboard.json:/etc/grafana/provisioning/dashboards/nginx-dashboard.json
