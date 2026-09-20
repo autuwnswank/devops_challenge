@@ -1,6 +1,0 @@
-#nginx_repo_url: "http://nginx.org.packages/ubuntu"
-nginx_repo_url: "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/ubuntu/ {{ ansible_distribution_release }} nginx"
-nginx_key_url: "https://nginx.org/keys/nginx_signing.key"
-nginx_key_dest: "/usr/share/keyrings/nginx-archive-keyring.gpg"
-nginx_list_file: "/etc/apt/sources.list.d/nginx.list"
-nginx_default_file: "/etc/nginx/conf.d/default.conf"
